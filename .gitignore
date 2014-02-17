@@ -1,0 +1,41 @@
+# Unity .gitignore file.
+.DS_Store
+*.pidb
+Library/
+Temp/
+Build/
+Debug/
+xcodeProject/
+
+# Mono develop
+*.csproj
+*.sln
+*.suo
+*.userprefs
+
+# Emacs
+~#*
+~$*
+
+
+Assembly-UnityScript-firstpass-vs.unityproj
+Assembly-UnityScript-firstpass.unityproj
+
+Assembly-UnityScript-vs.unityproj
+Assembly-UnityScript.unityproj
+
+Assembly-CSharp-vs.csproj.user
+
+UnityVS.JZ.sln.DotSettings
+UnityVS.JZ.UnityScript.Editor.unityproj
+UnityVS.JZ.UnityScript.Plugins.unityproj
+
+Assets/UnityVS.meta
+Assets/UnityVS/Editor.meta
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll.meta
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
+
+*vs.unityproj
+*.unityproj
