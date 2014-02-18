@@ -65,7 +65,7 @@ public class PlayerMainLogic : MonoBehaviour {
 	};
 	public BM_Dir mDir = BM_Dir.Down;
 	
-	BM_Player mPlayerData;
+//	BM_Player mPlayerData;
 	
 	public float wallWidth;
 	
@@ -76,7 +76,7 @@ public class PlayerMainLogic : MonoBehaviour {
 		BlockMap mMap = (BlockMap)Map.GetComponent<BlockMap>();
 		Block a = mMap.GetBlockAt(1,1,0);
 		BM_MapData.basePosition = a.transform.position;
-		mPlayerData = new BM_Player(player_x,player_y);
+	//	mPlayerData = new BM_Player(player_x,player_y);
 		Vector3 pos = BM_MapData.WallPositionByXY(player_x,player_y);
 		this.transform.position = pos;
 		
