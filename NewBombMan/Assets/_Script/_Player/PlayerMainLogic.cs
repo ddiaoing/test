@@ -35,7 +35,9 @@ public class PlayerMainLogic : MonoBehaviour {
 	public int upRightValue;
 	public int downLeftValue;
 	public int downRightValue;
-	
+
+	public bool useKeyboard = true;
+
 	public enum JoystickCmd
 	{
 		None,
