@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DopplerInteractive.TidyTileMapper.Utilities;
 
 
 public enum BlockState : int
@@ -44,6 +45,16 @@ public class Level : SingletonBehaviour<Level>
         w = map.currentWidth;
         h = map.currentHeight;  
         map_ = map;
+
+        float halfWidth = w * 0.2f / 2;
+        float halfHeight = h * 0.2f / 2;
+
+        Vector3 center = new Vector3(halfWidth - 0.1f, 0.0f, halfHeight - 0.1f);
+        Camera.main.transform.position = center + new Vector3(0, 1, -1) * 1;
+        Camera.main.transform.LookAt(center, Vector3.up);
+
+        Vector3 testCenter = BlockUtilities.GetMathematicalPosition(map_, w / 2, h / 2, 0);
+
         allMap = new BlockState[w, h];
 		
         for (int x = 1; x < w - 1; x++)
