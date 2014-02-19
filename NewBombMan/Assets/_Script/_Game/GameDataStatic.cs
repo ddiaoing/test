@@ -21,9 +21,7 @@ namespace GameDataStatic{
 		{
 			allMap = new int[x,y];
 		}
-		
-		
-		
+
 		public static void ChangeCubeStateOnMap(int x, int y, int _value)
 		{
 			allMap[x,y] = _value;
@@ -32,7 +30,6 @@ namespace GameDataStatic{
 		public static Vector3 WallPositionByXY(int x, int y)
 		{
 			Vector3 pos = basePosition;
-			
 			//map scale = 0.2f
 			pos.x += (x-1)*-0.2f;
 			pos.z += (y-1)*-0.2f;

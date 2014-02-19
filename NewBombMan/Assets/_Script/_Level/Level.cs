@@ -20,8 +20,12 @@ public class Level : SingletonBehaviour<Level>
     BlockMap map_;
 
     public Player localPlayer_; //玩家自己
-    List<GameObject> players_;  //网络玩家或者ai
-    List<GameObject> monsters_; //怪物
+    List<GameObject> players_ = new List<GameObject>();  //网络玩家或者ai
+    List<GameObject> monsters_ = new List<GameObject>(); //怪物
+    List<GameObject> bombs_ = new List<GameObject>();
+    List<GameObject> items_ = new List<GameObject>();
+
+    Vector3 basePosition;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +36,11 @@ public class Level : SingletonBehaviour<Level>
 	void Update () {
 	
 	}
+
+    public BlockState this[int x, int y]
+    {
+        get { return allMap[x, y]; }
+    }
 
     public void Load(string mapFile)
     {
@@ -49,11 +58,13 @@ public class Level : SingletonBehaviour<Level>
         float halfWidth = w * 0.2f / 2;
         float halfHeight = h * 0.2f / 2;
 
-        Vector3 center = new Vector3(halfWidth - 0.1f, 0.0f, halfHeight - 0.1f);
-        Camera.main.transform.position = center + new Vector3(0, 1, -1) * 1;
+		Vector3 center = new Vector3(halfWidth - 0.3f, 0, halfHeight - 0.1f);
+		Camera.main.fieldOfView = 45;
+        Camera.main.transform.position = center + new Vector3(0, 1.732f, 1.0f) * 1;
         Camera.main.transform.LookAt(center, Vector3.up);
 
-        Vector3 testCenter = BlockUtilities.GetMathematicalPosition(map_, w / 2, h / 2, 0);
+        Block block = map_.GetBlockAt(1, 1, 0);
+        basePosition = block.transform.position;
 
         allMap = new BlockState[w, h];
 		
@@ -74,19 +85,53 @@ public class Level : SingletonBehaviour<Level>
                 }
             }
         }
+
+        //to do init player position
+    }
+
+    public Vector3 GetPositionAt(int x, int y)
+    {
+        Vector3 pos = basePosition;
+        //map scale = 0.2f
+        pos.x += (x - 1) * -0.2f;
+        pos.z += (y - 1) * -0.2f;
+
+        return pos;
+    }
+
+    public void GetPoint(Vector3 pos, out int x, out int y)
+    {
+        x = (int)((basePosition.x - pos.x) * 5) + 1;
+        y = (int)((basePosition.z - pos.z) * 5) + 1;
     }
 
     public void SpawnPlayer(int x, int y, string name)
     {
+        GameObject res = Resources.Load(name) as GameObject;
+
+        GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
+        players_.Add(obj);
+
+        if (localPlayer_ == null)
+        {
+            localPlayer_ = obj.GetComponent<Player>();
+        }
     }
 
     public void SpawnMonster(int x, int y, string name)
     {
+        GameObject res = Resources.Load(name) as GameObject;
+
+        GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
+        monsters_.Add(obj);
     }
 
     public void SpawnBomb(int x, int y, string name)
     {
+        GameObject res = Resources.Load(name) as GameObject;
 
+        GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
+        bombs_.Add(obj);
     }
 
 }

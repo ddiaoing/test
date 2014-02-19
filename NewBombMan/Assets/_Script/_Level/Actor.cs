@@ -2,7 +2,13 @@
 using System.Collections;
 
 public class Actor : MonoBehaviour {
-    Level level_;
+    protected StateMachine<Actor> stateManager_;
+    protected Level level_;
+
+    void Awake()
+    {
+        level_ = Level.Instance;
+    }
 	// Use this for initialization
 	void Start () {
 	
