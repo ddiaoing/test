@@ -5660,7 +5660,7 @@ MonoBehaviour:
   bombLength: 3
   bombObj: {fileID: 100004, guid: 139f469c86f4e4d33a7c6c646c8a1947, type: 2}
   bombStrongObj: {fileID: 100004, guid: e28440b1f77874c4d82477b5a38c6bfa, type: 2}
-  Map: {fileID: 0}
+  Map: {fileID: 1998328035}
   player_x: 2
   player_y: 2
   curValue: 0
@@ -18173,7 +18173,7 @@ MonoBehaviour:
   speed: .600000024
   walkingInWall: 0
   isAttack: 0
-  Map: {fileID: 0}
+  Map: {fileID: 1998328035}
   posX: 4
   posY: 2
   curValue: 0
