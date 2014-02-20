@@ -139,6 +139,6 @@ public class Level : SingletonBehaviour<Level>
     public void ClearBlock(int x, int y)
     {
         this[x, y] = BlockState.Empty;
-      //  map_.
+        BlockUtilities.RemoveBlockFromMap(map_, x, y, 0, true, false);
     }
 }
