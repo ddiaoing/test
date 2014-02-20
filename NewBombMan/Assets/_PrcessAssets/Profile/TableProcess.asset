@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 4
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c6946b220604a21b5bc2f79d6ad021, type: 3}
+  m_Name: TableProcess
+  m_EditorClassIdentifier: 
+  tableInfos:
+  - table_class_name: BombInfoTable
+    data_class_name: BombInfo
+    sheet_name: Sheet1
+    ouput_asset_name: CardInfo.asset
+    input_excel: {fileID: 102900000, guid: b868af0a2b1f3024cb443950b4adfb63, type: 3}
+  - table_class_name: SkillInfoTable
+    data_class_name: SkillInfo
+    sheet_name: Sheet1
+    ouput_asset_name: SkillInfoTable.asset
+    input_excel: {fileID: 102900000, guid: a59d9dda0672beb4ba6f708682d108f3, type: 3}
+  - table_class_name: ChiefRuleSkillTable
+    data_class_name: ChiefRuleSkillInfo
+    sheet_name: Sheet1
+    ouput_asset_name: ChiefRuleSkillTable.asset
+    input_excel: {fileID: 102900000, guid: 7ac16e13f0f892a448d5cba865caa2f7, type: 3}
+  - table_class_name: CardAbilityLevelupRuleTable
+    data_class_name: CardAbilityLevelupRule
+    sheet_name: Sheet1
+    ouput_asset_name: CardAbilityLevelupRuleTable.asset
+    input_excel: {fileID: 102900000, guid: 5eb66f9c415488143aa3be6ebec2c57d, type: 3}
+  - table_class_name: CardLevelupRuleTable
+    data_class_name: CardLevelupRule
+    sheet_name: Sheet1
+    ouput_asset_name: CardLevelupRuleTable.asset
+    input_excel: {fileID: 102900000, guid: b34ae452ee459f749961df0ca970628c, type: 3}
+  - table_class_name: ChapterInfoTable
+    data_class_name: ChapterInfo
+    sheet_name: Sheet1
+    ouput_asset_name: ChapterInfoTable.asset
+    input_excel: {fileID: 102900000, guid: e2d6bb671d59fb04cbc8772d92f97393, type: 3}
+  - table_class_name: MissionInfoTable
+    data_class_name: MissionInfo
+    sheet_name: Sheet1
+    ouput_asset_name: MissionInfoTable.asset
+    input_excel: {fileID: 102900000, guid: d7e86925754ece04ab43cbe6642cebdc, type: 3}
+  - table_class_name: RoundInfoTable
+    data_class_name: RoundInfo
+    sheet_name: Sheet1
+    ouput_asset_name: RoundInfoTable.asset
+    input_excel: {fileID: 102900000, guid: 132bb7ed639ca374f854f1687e6468d6, type: 3}
+  - table_class_name: PropsInfoTable
+    data_class_name: PropsInfo
+    sheet_name: "\u9053\u5177\u4FE1\u606F"
+    ouput_asset_name: PropsInfoTable.asset
+    input_excel: {fileID: 102900000, guid: 4168d839083d1944fabc0b804c9ada2c, type: 3}
+  - table_class_name: RoleLevelInfoTable
+    data_class_name: RoleLevelInfo
+    sheet_name: Sheet1
+    ouput_asset_name: RoleLevelInfoTable.asset
+    input_excel: {fileID: 102900000, guid: 205b612a3997b9148879d55a4348bce1, type: 3}

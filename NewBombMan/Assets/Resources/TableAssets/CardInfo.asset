@@ -1,0 +1,614 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 392f5c85f49eaa740b02505765148c44, type: 3}
+  m_Name: CardInfo
+  m_EditorClassIdentifier: 
+  elements:
+  - id: 1
+    level: 1
+    lv_up_exp: 30
+    leadership: 31
+    max_power: 21
+    max_friend: 20
+  - id: 2
+    level: 2
+    lv_up_exp: 40
+    leadership: 31
+    max_power: 22
+    max_friend: 21
+  - id: 3
+    level: 3
+    lv_up_exp: 80
+    leadership: 32
+    max_power: 23
+    max_friend: 22
+  - id: 4
+    level: 4
+    lv_up_exp: 200
+    leadership: 32
+    max_power: 24
+    max_friend: 23
+  - id: 5
+    level: 5
+    lv_up_exp: 750
+    leadership: 33
+    max_power: 25
+    max_friend: 24
+  - id: 6
+    level: 6
+    lv_up_exp: 800
+    leadership: 33
+    max_power: 26
+    max_friend: 25
+  - id: 7
+    level: 7
+    lv_up_exp: 1000
+    leadership: 34
+    max_power: 27
+    max_friend: 26
+  - id: 8
+    level: 8
+    lv_up_exp: 1400
+    leadership: 34
+    max_power: 28
+    max_friend: 27
+  - id: 9
+    level: 9
+    lv_up_exp: 1600
+    leadership: 35
+    max_power: 29
+    max_friend: 28
+  - id: 10
+    level: 10
+    lv_up_exp: 1800
+    leadership: 35
+    max_power: 30
+    max_friend: 29
+  - id: 11
+    level: 11
+    lv_up_exp: 2300
+    leadership: 36
+    max_power: 31
+    max_friend: 30
+  - id: 12
+    level: 12
+    lv_up_exp: 2600
+    leadership: 36
+    max_power: 32
+    max_friend: 31
+  - id: 13
+    level: 13
+    lv_up_exp: 2900
+    leadership: 37
+    max_power: 33
+    max_friend: 32
+  - id: 14
+    level: 14
+    lv_up_exp: 3300
+    leadership: 37
+    max_power: 34
+    max_friend: 33
+  - id: 15
+    level: 15
+    lv_up_exp: 3700
+    leadership: 38
+    max_power: 35
+    max_friend: 34
+  - id: 16
+    level: 16
+    lv_up_exp: 4100
+    leadership: 38
+    max_power: 36
+    max_friend: 35
+  - id: 17
+    level: 17
+    lv_up_exp: 4400
+    leadership: 39
+    max_power: 37
+    max_friend: 36
+  - id: 18
+    level: 18
+    lv_up_exp: 4900
+    leadership: 39
+    max_power: 38
+    max_friend: 37
+  - id: 19
+    level: 19
+    lv_up_exp: 5400
+    leadership: 40
+    max_power: 39
+    max_friend: 38
+  - id: 20
+    level: 20
+    lv_up_exp: 6000
+    leadership: 40
+    max_power: 40
+    max_friend: 39
+  - id: 21
+    level: 21
+    lv_up_exp: 6600
+    leadership: 41
+    max_power: 41
+    max_friend: 40
+  - id: 22
+    level: 22
+    lv_up_exp: 7200
+    leadership: 41
+    max_power: 42
+    max_friend: 41
+  - id: 23
+    level: 23
+    lv_up_exp: 7800
+    leadership: 42
+    max_power: 43
+    max_friend: 42
+  - id: 24
+    level: 24
+    lv_up_exp: 8400
+    leadership: 42
+    max_power: 44
+    max_friend: 43
+  - id: 25
+    level: 25
+    lv_up_exp: 9000
+    leadership: 43
+    max_power: 45
+    max_friend: 44
+  - id: 26
+    level: 26
+    lv_up_exp: 10000
+    leadership: 43
+    max_power: 46
+    max_friend: 45
+  - id: 27
+    level: 27
+    lv_up_exp: 11000
+    leadership: 44
+    max_power: 47
+    max_friend: 46
+  - id: 28
+    level: 28
+    lv_up_exp: 12000
+    leadership: 44
+    max_power: 48
+    max_friend: 47
+  - id: 29
+    level: 29
+    lv_up_exp: 13000
+    leadership: 45
+    max_power: 49
+    max_friend: 48
+  - id: 30
+    level: 30
+    lv_up_exp: 14000
+    leadership: 45
+    max_power: 50
+    max_friend: 49
+  - id: 31
+    level: 31
+    lv_up_exp: 15000
+    leadership: 46
+    max_power: 51
+    max_friend: 50
+  - id: 32
+    level: 32
+    lv_up_exp: 16000
+    leadership: 46
+    max_power: 52
+    max_friend: 50
+  - id: 33
+    level: 33
+    lv_up_exp: 17000
+    leadership: 47
+    max_power: 53
+    max_friend: 50
+  - id: 34
+    level: 34
+    lv_up_exp: 18000
+    leadership: 47
+    max_power: 54
+    max_friend: 50
+  - id: 35
+    level: 35
+    lv_up_exp: 19000
+    leadership: 48
+    max_power: 55
+    max_friend: 50
+  - id: 36
+    level: 36
+    lv_up_exp: 20000
+    leadership: 48
+    max_power: 56
+    max_friend: 50
+  - id: 37
+    level: 37
+    lv_up_exp: 21000
+    leadership: 49
+    max_power: 57
+    max_friend: 50
+  - id: 38
+    level: 38
+    lv_up_exp: 22000
+    leadership: 49
+    max_power: 58
+    max_friend: 50
+  - id: 39
+    level: 39
+    lv_up_exp: 23000
+    leadership: 50
+    max_power: 59
+    max_friend: 50
+  - id: 40
+    level: 40
+    lv_up_exp: 24000
+    leadership: 50
+    max_power: 60
+    max_friend: 50
+  - id: 41
+    level: 41
+    lv_up_exp: 25000
+    leadership: 51
+    max_power: 60
+    max_friend: 50
+  - id: 42
+    level: 42
+    lv_up_exp: 27000
+    leadership: 52
+    max_power: 60
+    max_friend: 50
+  - id: 43
+    level: 43
+    lv_up_exp: 29000
+    leadership: 53
+    max_power: 60
+    max_friend: 50
+  - id: 44
+    level: 44
+    lv_up_exp: 32000
+    leadership: 54
+    max_power: 60
+    max_friend: 50
+  - id: 45
+    level: 45
+    lv_up_exp: 35000
+    leadership: 54
+    max_power: 61
+    max_friend: 50
+  - id: 46
+    level: 46
+    lv_up_exp: 38000
+    leadership: 55
+    max_power: 61
+    max_friend: 50
+  - id: 47
+    level: 47
+    lv_up_exp: 41000
+    leadership: 56
+    max_power: 61
+    max_friend: 50
+  - id: 48
+    level: 48
+    lv_up_exp: 44000
+    leadership: 57
+    max_power: 61
+    max_friend: 50
+  - id: 49
+    level: 49
+    lv_up_exp: 47000
+    leadership: 58
+    max_power: 61
+    max_friend: 50
+  - id: 50
+    level: 50
+    lv_up_exp: 50000
+    leadership: 58
+    max_power: 62
+    max_friend: 50
+  - id: 51
+    level: 51
+    lv_up_exp: 54000
+    leadership: 58
+    max_power: 62
+    max_friend: 50
+  - id: 52
+    level: 52
+    lv_up_exp: 58000
+    leadership: 59
+    max_power: 62
+    max_friend: 50
+  - id: 53
+    level: 53
+    lv_up_exp: 62000
+    leadership: 60
+    max_power: 62
+    max_friend: 50
+  - id: 54
+    level: 54
+    lv_up_exp: 66000
+    leadership: 61
+    max_power: 62
+    max_friend: 50
+  - id: 55
+    level: 55
+    lv_up_exp: 70000
+    leadership: 62
+    max_power: 63
+    max_friend: 50
+  - id: 56
+    level: 56
+    lv_up_exp: 74000
+    leadership: 63
+    max_power: 63
+    max_friend: 50
+  - id: 57
+    level: 57
+    lv_up_exp: 78000
+    leadership: 64
+    max_power: 63
+    max_friend: 50
+  - id: 58
+    level: 58
+    lv_up_exp: 82000
+    leadership: 65
+    max_power: 63
+    max_friend: 50
+  - id: 59
+    level: 59
+    lv_up_exp: 86000
+    leadership: 66
+    max_power: 63
+    max_friend: 50
+  - id: 60
+    level: 60
+    lv_up_exp: 90000
+    leadership: 66
+    max_power: 64
+    max_friend: 50
+  - id: 61
+    level: 61
+    lv_up_exp: 95000
+    leadership: 67
+    max_power: 64
+    max_friend: 50
+  - id: 62
+    level: 62
+    lv_up_exp: 100000
+    leadership: 68
+    max_power: 64
+    max_friend: 50
+  - id: 63
+    level: 63
+    lv_up_exp: 105000
+    leadership: 69
+    max_power: 64
+    max_friend: 50
+  - id: 64
+    level: 64
+    lv_up_exp: 110000
+    leadership: 70
+    max_power: 64
+    max_friend: 50
+  - id: 65
+    level: 65
+    lv_up_exp: 115000
+    leadership: 71
+    max_power: 65
+    max_friend: 50
+  - id: 66
+    level: 66
+    lv_up_exp: 120000
+    leadership: 71
+    max_power: 65
+    max_friend: 50
+  - id: 67
+    level: 67
+    lv_up_exp: 125000
+    leadership: 72
+    max_power: 65
+    max_friend: 50
+  - id: 68
+    level: 68
+    lv_up_exp: 130000
+    leadership: 73
+    max_power: 65
+    max_friend: 50
+  - id: 69
+    level: 69
+    lv_up_exp: 135000
+    leadership: 74
+    max_power: 65
+    max_friend: 50
+  - id: 70
+    level: 70
+    lv_up_exp: 140000
+    leadership: 74
+    max_power: 66
+    max_friend: 50
+  - id: 71
+    level: 71
+    lv_up_exp: 145000
+    leadership: 75
+    max_power: 66
+    max_friend: 50
+  - id: 72
+    level: 72
+    lv_up_exp: 150000
+    leadership: 76
+    max_power: 66
+    max_friend: 50
+  - id: 73
+    level: 73
+    lv_up_exp: 156000
+    leadership: 77
+    max_power: 66
+    max_friend: 50
+  - id: 74
+    level: 74
+    lv_up_exp: 162000
+    leadership: 78
+    max_power: 66
+    max_friend: 50
+  - id: 75
+    level: 75
+    lv_up_exp: 168000
+    leadership: 78
+    max_power: 67
+    max_friend: 50
+  - id: 76
+    level: 76
+    lv_up_exp: 172000
+    leadership: 79
+    max_power: 67
+    max_friend: 50
+  - id: 77
+    level: 77
+    lv_up_exp: 180000
+    leadership: 80
+    max_power: 67
+    max_friend: 50
+  - id: 78
+    level: 78
+    lv_up_exp: 186000
+    leadership: 81
+    max_power: 67
+    max_friend: 50
+  - id: 79
+    level: 79
+    lv_up_exp: 192000
+    leadership: 82
+    max_power: 67
+    max_friend: 50
+  - id: 80
+    level: 80
+    lv_up_exp: 198000
+    leadership: 82
+    max_power: 68
+    max_friend: 50
+  - id: 81
+    level: 81
+    lv_up_exp: 204000
+    leadership: 83
+    max_power: 68
+    max_friend: 50
+  - id: 82
+    level: 82
+    lv_up_exp: 210000
+    leadership: 84
+    max_power: 68
+    max_friend: 50
+  - id: 83
+    level: 83
+    lv_up_exp: 217000
+    leadership: 85
+    max_power: 68
+    max_friend: 50
+  - id: 84
+    level: 84
+    lv_up_exp: 224000
+    leadership: 86
+    max_power: 68
+    max_friend: 50
+  - id: 85
+    level: 85
+    lv_up_exp: 231000
+    leadership: 86
+    max_power: 69
+    max_friend: 50
+  - id: 86
+    level: 86
+    lv_up_exp: 238000
+    leadership: 87
+    max_power: 69
+    max_friend: 50
+  - id: 87
+    level: 87
+    lv_up_exp: 245000
+    leadership: 88
+    max_power: 69
+    max_friend: 50
+  - id: 88
+    level: 88
+    lv_up_exp: 252000
+    leadership: 89
+    max_power: 69
+    max_friend: 50
+  - id: 89
+    level: 89
+    lv_up_exp: 259000
+    leadership: 90
+    max_power: 69
+    max_friend: 50
+  - id: 90
+    level: 90
+    lv_up_exp: 266000
+    leadership: 90
+    max_power: 70
+    max_friend: 50
+  - id: 91
+    level: 91
+    lv_up_exp: 273000
+    leadership: 91
+    max_power: 70
+    max_friend: 50
+  - id: 92
+    level: 92
+    lv_up_exp: 280000
+    leadership: 92
+    max_power: 70
+    max_friend: 50
+  - id: 93
+    level: 93
+    lv_up_exp: 287000
+    leadership: 93
+    max_power: 70
+    max_friend: 50
+  - id: 94
+    level: 94
+    lv_up_exp: 294000
+    leadership: 94
+    max_power: 70
+    max_friend: 50
+  - id: 95
+    level: 95
+    lv_up_exp: 302000
+    leadership: 94
+    max_power: 71
+    max_friend: 50
+  - id: 96
+    level: 96
+    lv_up_exp: 310000
+    leadership: 95
+    max_power: 71
+    max_friend: 50
+  - id: 97
+    level: 97
+    lv_up_exp: 318000
+    leadership: 96
+    max_power: 71
+    max_friend: 50
+  - id: 98
+    level: 98
+    lv_up_exp: 326000
+    leadership: 97
+    max_power: 71
+    max_friend: 50
+  - id: 99
+    level: 99
+    lv_up_exp: 334000
+    leadership: 98
+    max_power: 71
+    max_friend: 50
+  - id: 100
+    level: 100
+    lv_up_exp: 0
+    leadership: 98
+    max_power: 72
+    max_friend: 50

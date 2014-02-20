@@ -2,15 +2,76 @@
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
+    public bool useKeyboard = true;
 
 	// Use this for initialization
 	void Start () {
         Input.multiTouchEnabled = true;
-	}
+
+#if (UNITY_ANDROID || UNITY_IPHONE)
+        useKeyboard = false;
+#endif
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+        if (useKeyboard)
+        {
+            Player player = Level.Instance.localPlayer_;
+            if (player == null)
+            {
+                return;
+            }
+
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+            if (h > 0)
+            {
+                if (v > 0)
+                {
+                    player.SetControl(Control.RightUp);
+                }
+                else if (v == 0)
+                {
+                    player.SetControl(Control.Right);
+                }
+                else
+                {
+                    player.SetControl(Control.RightDown);
+                }
+            }
+            else if (h == 0)
+            {
+                if (v > 0)
+                {
+                    player.SetControl(Control.Up);
+                }
+                else if (v == 0)
+                {
+                    player.SetControl(Control.None);
+                }
+                else
+                {
+                    player.SetControl(Control.Down);
+                }
+            }
+            else
+            {
+                if (v > 0)
+                {
+                    player.SetControl(Control.LeftUp);
+                }
+                else if (v == 0)
+                {
+                    player.SetControl(Control.Left);
+                }
+                else
+                {
+                    player.SetControl(Control.LeftDown);
+                }
+            }
+        }
 	}
 
 	
@@ -21,7 +82,16 @@ public class PlayerInput : MonoBehaviour {
         {
             return;
         }
+
+        if (useKeyboard)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                player.SetBomb();
+            }
         
+        }
+  
 		if (GUI.Button(new Rect(Screen.width * 0.7f, Screen.height * 0.7f, Screen.width * 0.1f, Screen.width * 0.1f), "Bomb"))
 		{
             player.SetBomb();
@@ -41,12 +111,18 @@ public class PlayerInput : MonoBehaviour {
 
     void On_JoystickMove(MovingJoystick move)
     {
-        Control mJoystickCmd;
-        GetCmd(move, out mJoystickCmd);
-        Level.Instance.localPlayer_.SetControl(mJoystickCmd);
+        Player player = Level.Instance.localPlayer_;
+        if (player == null)
+        {
+            return;
+        }
+
+        Control control;
+        GetCmd(move, out control);
+        player.SetControl(control);
     }
 
-    void GetCmd(MovingJoystick move, out Control mJoystickCmd)
+    void GetCmd(MovingJoystick move, out Control control)
     {     
         // x -1 ~ 1  left ~ right
         // y -1 ~ 1  down ~ up
@@ -54,18 +130,18 @@ public class PlayerInput : MonoBehaviour {
 
         Vector2 dir = move.joystickAxis;
 
-        mJoystickCmd = Control.None;
+        control = Control.None;
 
         float angle = JoystickAngle(dir);
 
         if (angle <= 15)
         {
-            mJoystickCmd = Control.Up;
+            control = Control.Up;
             return;
         }
         if (angle > 165)
         {
-            mJoystickCmd = Control.Down;
+            control = Control.Down;
             return;
         }
 
@@ -73,27 +149,27 @@ public class PlayerInput : MonoBehaviour {
         {
             if (angle > 15 && angle <= 45)
             {
-                mJoystickCmd = Control.UpRight;
+                control = Control.UpRight;
                 return;
             }
             else if (angle > 45 && angle <= 75)
             {
-                mJoystickCmd = Control.RightUp;
+                control = Control.RightUp;
                 return;
             }
             else if (angle > 75 && angle <= 105)
             {
-                mJoystickCmd = Control.Right;
+                control = Control.Right;
                 return;
             }
             else if (angle > 105 && angle <= 135)
             {
-                mJoystickCmd = Control.RightDown;
+                control = Control.RightDown;
                 return;
             }
             else if (angle > 135 && angle <= 165)
             {
-                mJoystickCmd = Control.DownRight;
+                control = Control.DownRight;
                 return;
             }
         }
@@ -101,27 +177,27 @@ public class PlayerInput : MonoBehaviour {
         {
             if (angle > 15 && angle <= 45)
             {
-                mJoystickCmd = Control.UpLeft;
+                control = Control.UpLeft;
                 return;
             }
             else if (angle > 45 && angle <= 75)
             {
-                mJoystickCmd = Control.LeftUp;
+                control = Control.LeftUp;
                 return;
             }
             else if (angle > 75 && angle <= 105)
             {
-                mJoystickCmd = Control.Left;
+                control = Control.Left;
                 return;
             }
             else if (angle > 105 && angle <= 135)
             {
-                mJoystickCmd = Control.LeftDown;
+                control = Control.LeftDown;
                 return;
             }
             else if (angle > 135 && angle <= 165)
             {
-                mJoystickCmd = Control.DownLeft;
+                control = Control.DownLeft;
                 return;
             }
         }
@@ -132,7 +208,13 @@ public class PlayerInput : MonoBehaviour {
     // Easy Touch Plugin Function
     void On_JoystickMoveEnd(MovingJoystick move)
     {
-        Level.Instance.localPlayer_.SetControl(Control.None);
+        Player player = Level.Instance.localPlayer_;
+        if (player == null)
+        {
+            return;
+        }
+
+        player.SetControl(Control.None);
     }
     #endregion
 
