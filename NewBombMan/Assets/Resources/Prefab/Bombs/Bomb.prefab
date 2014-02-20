@@ -138,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72ee5915b9a5ce499af488e56277175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flameObj: {fileID: 100000, guid: 2f9e7030759a647e5b7ec0b46dd414f0, type: 2}
   posX: 0
   posY: 0
-  mLength: 5
+  flameObj: {fileID: 100000, guid: 2f9e7030759a647e5b7ec0b46dd414f0, type: 2}
+  length: 3
   isStrong: 0
   beHit: 0
 --- !u!1001 &100100000

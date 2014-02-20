@@ -21,7 +21,7 @@ public class Monster : Actor
 
     public enum EnemyState
     {
-        Idel,
+        Idle,
         Stop,
         StopOver,
         Walk,
@@ -35,12 +35,12 @@ public class Monster : Actor
         DieOver,
     };
 
-    public EnemyState mState = EnemyState.Idel;
+    public EnemyState mState = EnemyState.Idle;
 
     float mIdelTime = 0.5f;
     float mIdelTempTime;
 
-    public BM_Dir mNextDir = BM_Dir.None;
+    public Direction mNextDir = Direction.None;
 
     protected override void Awake()
     {
@@ -59,7 +59,7 @@ public class Monster : Actor
     {
         switch (mState)
         {
-            case EnemyState.Idel:
+            case EnemyState.Idle:
                 if (Time.time - mIdelTempTime > mIdelTime)
                 {
                     mState = EnemyState.Stop;
@@ -67,7 +67,7 @@ public class Monster : Actor
                 break;
 
             case EnemyState.Walk:
-                int i1 = Move(mDir);
+                int i1 = Move(dir_);
                 if (i1 <= 0)
                 {
                     Debug.Log("i= " + i1 + " x= " + posX + " y=" + posY); ;
@@ -79,147 +79,33 @@ public class Monster : Actor
                 int i = Random.Range(1, 100) % 5;
                 if (i == 0)
                 {
-                    TurnDirection(BM_Dir.Up);
+                    TurnDirection(Direction.Up);
                     mState = EnemyState.Walk;
                 }
                 else if (i == 1)
                 {
-                    TurnDirection(BM_Dir.Down);
+                    TurnDirection(Direction.Down);
                     mState = EnemyState.Walk;
                 }
                 else if (i == 2)
                 {
-                    TurnDirection(BM_Dir.Left);
+                    TurnDirection(Direction.Left);
                     mState = EnemyState.Walk;
                 }
                 else if (i == 3)
                 {
-                    TurnDirection(BM_Dir.Right);
+                    TurnDirection(Direction.Right);
                     mState = EnemyState.Walk;
                 }
                 else
                 {
                     mIdelTempTime = Time.time;
-                    mState = EnemyState.Idel;
+                    mState = EnemyState.Idle;
                 }
                 break;
 
         }
 
-    }
-
-    // true :  stop moving
-    // false : go on moving
-    int Move(BM_Dir dir)
-    {
-        Vector3 curWallPos = level_.GetPositionAt(posX, posY);
-        if (dir == BM_Dir.Up)
-        {
-            if (IsAlllowToPass(upValue))
-            {
-                this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                UpdatePosition();
-                return 1;
-            }
-            else
-            {
-                if (this.transform.position.z > curWallPos.z)
-                {
-                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return 1;
-                }
-                else if (this.transform.position.z < curWallPos.z)
-                {
-                    Vector3 pos = this.transform.position;
-                    pos.z = curWallPos.z;
-                    this.transform.position = pos;
-                    UpdatePosition();
-                    return 0;
-                }
-                return -1;
-            }
-        }
-        else if (dir == BM_Dir.Down)
-        {
-            if (IsAlllowToPass(downValue))
-            {
-                this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                UpdatePosition();
-                return 1;
-            }
-            else
-            {
-                if (this.transform.position.z < curWallPos.z)
-                {
-                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return 1;
-                }
-                else if (this.transform.position.z > curWallPos.z)
-                {
-                    Vector3 pos = this.transform.position;
-                    pos.z = curWallPos.z;
-                    this.transform.position = pos;
-                    UpdatePosition();
-                    return 0;
-                }
-                return -1;
-            }
-
-        }
-        else if (dir == BM_Dir.Left)
-        {
-            if (IsAlllowToPass(leftValue))
-            {
-                this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                UpdatePosition();
-                return 1;
-            }
-            else
-            {
-                if (this.transform.position.x < curWallPos.x)
-                {
-                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return 1;
-                }
-                else if (this.transform.position.x > curWallPos.x)
-                {
-                    Vector3 pos = this.transform.position;
-                    pos.z = curWallPos.z;
-                    this.transform.position = pos;
-                    UpdatePosition();
-                    return 0;
-                }
-                return -1;
-            }
-        }
-        else if (dir == BM_Dir.Right)
-        {
-            if (IsAlllowToPass(rightValue))
-            {
-                this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                UpdatePosition();
-                return 1;
-            }
-            else
-            {
-                if (this.transform.position.x > curWallPos.x)
-                {
-                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return 1;
-                }
-                else if (this.transform.position.x < curWallPos.x)
-                {
-                    Vector3 pos = this.transform.position;
-                    pos.z = curWallPos.z;
-                    this.transform.position = pos;
-                    UpdatePosition();
-                    return 0;
-                }
-                return -1;
-            }
-
-        }
-        return -1;
     }
 
 

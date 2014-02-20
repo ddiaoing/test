@@ -3,15 +3,12 @@ using System.Collections;
 
 public class Bomb : MonoBehaviour
 {
-    Level level_;
+    protected Level level_;
+
+    public int posX, posY;
     public Object flameObj;
-
-    // position on map
-    public int posX;
-    public int posY;
-
     // at least 2
-    public int mLength;
+    public int length;
 
     // player property
     public bool isStrong;
@@ -33,16 +30,16 @@ public class Bomb : MonoBehaviour
         return "bomb_" + x + "_" + y;
     }
 
-    void Awake()
+    protected virtual void Awake()
     {
         level_ = Level.Instance;
     }
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
         level_.GetPoint(transform.position, out posX, out posY);
-
+      
         for (int i = 0; i < frameStop.Length; i++)
         {
             frameStop[i] = false;
@@ -76,7 +73,7 @@ public class Bomb : MonoBehaviour
         FlameOn(posX, posY, 0);
 
         // create the flame 
-        for (int i = 1; i <= mLength; i++)
+        for (int i = 1; i <= length; i++)
         {
             //up
             if (frameStop[0] == false)

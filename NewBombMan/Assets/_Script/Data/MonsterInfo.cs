@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 
 
+
 [System.Serializable]
-public class BombInfo
+public class MonsterInfo
 {
     public int id;
-    public int length;
+    public bool isboss;
     public int attack;
     public string model_file;
 
@@ -16,11 +17,11 @@ public class BombInfo
 }
 
 [System.Serializable]
-public class BombInfoTable : DataList<BombInfo>
+public class MonsterInfoTable : DataList<MonsterInfo>
 {
-    public BombInfo GetById(int id)
+    public MonsterInfo GetById(int id)
     {
-        foreach (BombInfo ri in elements)
+        foreach (MonsterInfo ri in elements)
         {
             if (ri.id == id)
             {

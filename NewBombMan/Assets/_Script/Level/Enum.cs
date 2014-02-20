@@ -18,8 +18,7 @@ public enum Control
     LeftDown,
     RightUp,
     RightDown,
-};
-
+}
 
 public enum BlockState : int
 {
@@ -29,3 +28,13 @@ public enum BlockState : int
 	
 	Bomb = -1
 }
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right,
+    None,
+}
+

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Actor : MonoBehaviour {
+public class Actor : MonoBehaviour 
+{
     protected StateMachine<Actor> stateManager_;
     protected Level level_;
 
@@ -21,18 +22,9 @@ public class Actor : MonoBehaviour {
     protected BlockState upRightValue;
     protected BlockState downLeftValue;
     protected BlockState downRightValue;
-    
 
-    public enum BM_Dir
-    {
-        Up,
-        Down,
-        Left,
-        Right,
-        None,
-    };
 
-    public BM_Dir mDir = BM_Dir.Down;
+    public Direction dir_ = Direction.Down;
 
 
     protected virtual void Awake()
@@ -48,45 +40,32 @@ public class Actor : MonoBehaviour {
 
     #region tool function
 
-    protected void TurnDirection(BM_Dir dir)
+    protected void TurnDirection(Direction dir)
     {
         switch (dir)
         {
-            case BM_Dir.Up:
+            case Direction.Up:
                 if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 180, 0)))
                     this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                 break;
 
-            case BM_Dir.Down:
+            case Direction.Down:
                 if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 0, 0)))
                     this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 break;
 
-            case BM_Dir.Left:
+            case Direction.Left:
                 if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 90, 0)))
                     this.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
                 break;
 
-            case BM_Dir.Right:
+            case Direction.Right:
                 if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 270, 0)))
                     this.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
                 break;
         }
-		mDir = dir;
-    }
 
-
-    protected bool IsAlllowToPass(BlockState wallValue)
-    {
-        //todo  whether the user can pass the wall
-        if (wallValue == BlockState.Empty)
-            return true;
-        else
-        {
-            if (wallValue == BlockState.Cube && walkingInWall)
-                return true;
-            return false;
-        }
+		dir_ = dir;
     }
 
     protected void GetCurrentPositionInfo()
@@ -136,6 +115,130 @@ public class Actor : MonoBehaviour {
         }
     }
 
+    public bool IsAlllowToPass(BlockState wallValue)
+    {
+        //todo  whether the user can pass the wall
+        if (wallValue == BlockState.Empty)
+            return true;
+        else
+        {
+            if (wallValue == BlockState.Cube && walkingInWall)
+                return true;
+            return false;
+        }
+    }
+
+    public int Move(Direction dir)
+    {
+        Vector3 curWallPos = level_.GetPositionAt(posX, posY);
+        if (dir == Direction.Up)
+        {
+            if (IsAlllowToPass(upValue))
+            {
+                this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                UpdatePosition();
+                return 1;
+            }
+            else
+            {
+                if (this.transform.position.z > curWallPos.z)
+                {
+                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                    return 1;
+                }
+                else if (this.transform.position.z < curWallPos.z)
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z = curWallPos.z;
+                    this.transform.position = pos;
+                    UpdatePosition();
+                    return 0;
+                }
+                return -1;
+            }
+        }
+        else if (dir == Direction.Down)
+        {
+            if (IsAlllowToPass(downValue))
+            {
+                this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                UpdatePosition();
+                return 1;
+            }
+            else
+            {
+                if (this.transform.position.z < curWallPos.z)
+                {
+                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                    return 1;
+                }
+                else if (this.transform.position.z > curWallPos.z)
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z = curWallPos.z;
+                    this.transform.position = pos;
+                    UpdatePosition();
+                    return 0;
+                }
+                return -1;
+            }
+
+        }
+        else if (dir == Direction.Left)
+        {
+            if (IsAlllowToPass(leftValue))
+            {
+                this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                UpdatePosition();
+                return 1;
+            }
+            else
+            {
+                if (this.transform.position.x < curWallPos.x)
+                {
+                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                    return 1;
+                }
+                else if (this.transform.position.x > curWallPos.x)
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z = curWallPos.z;
+                    this.transform.position = pos;
+                    UpdatePosition();
+                    return 0;
+                }
+                return -1;
+            }
+        }
+        else if (dir == Direction.Right)
+        {
+            if (IsAlllowToPass(rightValue))
+            {
+                this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                UpdatePosition();
+                return 1;
+            }
+            else
+            {
+                if (this.transform.position.x > curWallPos.x)
+                {
+                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
+                    return 1;
+                }
+                else if (this.transform.position.x < curWallPos.x)
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z = curWallPos.z;
+                    this.transform.position = pos;
+                    UpdatePosition();
+                    return 0;
+                }
+                return -1;
+            }
+
+        }
+        return -1;
+    }
 
     #endregion
 

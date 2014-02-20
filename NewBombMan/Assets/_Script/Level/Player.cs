@@ -45,34 +45,34 @@ public class Player : Actor
         switch (control_)
         {
             case Control.Up:
-                mDir = WalkUp();
+                dir_ = WalkUp();
                 UpdatePosition();
                 break;
 
             case Control.UpLeft:
-                mDir = WalkUp();
-                if (mDir == BM_Dir.None)
+                dir_ = WalkUp();
+                if (dir_ == Direction.None)
                     WalkLeft();
                 UpdatePosition();
                 break;
 
             case Control.LeftUp:
-                mDir = WalkLeft();
-                if (mDir == BM_Dir.None)
+                dir_ = WalkLeft();
+                if (dir_ == Direction.None)
                     WalkUp();
                 UpdatePosition();
                 break;
 
             case Control.UpRight:
                 WalkUp();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkRight();
                 UpdatePosition();
                 break;
 
             case Control.RightUp:
                 WalkRight();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkUp();
                 UpdatePosition();
                 break;
@@ -84,28 +84,28 @@ public class Player : Actor
 
             case Control.DownLeft:
                 WalkDown();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkLeft();
                 UpdatePosition();
                 break;
 
             case Control.LeftDown:
                 WalkLeft();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkDown();
                 UpdatePosition();
                 break;
 
             case Control.DownRight:
                 WalkDown();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkRight();
                 UpdatePosition();
                 break;
 
             case Control.RightDown:
                 WalkRight();
-                if (mDir == BM_Dir.None)
+                if (dir_ == Direction.None)
                     WalkDown();
                 UpdatePosition();
                 break;
@@ -124,7 +124,7 @@ public class Player : Actor
 
 
     #region  Player Movement
-    BM_Dir WalkUp()
+    Direction WalkUp()
     {
         Vector3 curWallPos = level_.GetPositionAt(posX, posY);
 
@@ -134,23 +134,23 @@ public class Player : Actor
             if (Mathf.Abs(this.transform.position.x - curWallPos.x) < 0.1f * wallWidth)
             {
                 	Debug.Log("move Up");
-                TurnDirection(BM_Dir.Up);
+                TurnDirection(Direction.Up);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Up;
+                return Direction.Up;
             }
             else if (this.transform.position.x - curWallPos.x > 0.1f * wallWidth)
             {
                 //	Debug.Log("move Right");
-                TurnDirection(BM_Dir.Right);
+                TurnDirection(Direction.Right);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Right;
+                return Direction.Right;
             }
             else if (curWallPos.x - this.transform.position.x > 0.1f * wallWidth)
             {
                 //		Debug.Log("move Left");
-                TurnDirection(BM_Dir.Left);
+                TurnDirection(Direction.Left);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Left;
+                return Direction.Left;
             }
         }
         else
@@ -162,9 +162,9 @@ public class Player : Actor
                 if (IsAlllowToPass(upLeftValue))
                 {
                     //				Debug.Log("move left");
-                    TurnDirection(BM_Dir.Left);
+                    TurnDirection(Direction.Left);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Left;
+                    return Direction.Left;
                 }
             }
             //right
@@ -174,9 +174,9 @@ public class Player : Actor
                 if (IsAlllowToPass(upRightValue))
                 {
                     //				Debug.Log("move right");
-                    TurnDirection(BM_Dir.Right);
+                    TurnDirection(Direction.Right);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Right;
+                    return Direction.Right;
                 }
             }
             else
@@ -185,23 +185,23 @@ public class Player : Actor
                 // go back first  
                 if (this.transform.position.z > curWallPos.z)
                 {
-                    TurnDirection(BM_Dir.Up);
+                    TurnDirection(Direction.Up);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Up;
+                    return Direction.Up;
                 }
                 else if (this.transform.position.z < curWallPos.z)
                 {
                     Vector3 pos = this.transform.position;
                     pos.z = curWallPos.z;
                     this.transform.position = pos;
-                    return BM_Dir.Up;
+                    return Direction.Up;
                 }
             }
         }
-        return BM_Dir.None;
+        return Direction.None;
     }
 
-    BM_Dir WalkDown()
+    Direction WalkDown()
     {
         Vector3 curWallPos = level_.GetPositionAt(posX, posY);
 
@@ -211,23 +211,23 @@ public class Player : Actor
             if (Mathf.Abs(this.transform.position.x - curWallPos.x) < 0.1f * wallWidth)
             {
                 //		Debug.Log("move Down");
-                TurnDirection(BM_Dir.Down);
+                TurnDirection(Direction.Down);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Down;
+                return Direction.Down;
             }
             else if (this.transform.position.x - curWallPos.x > 0.1f * wallWidth)
             {
                 //		Debug.Log("move Right");
-                TurnDirection(BM_Dir.Right);
+                TurnDirection(Direction.Right);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Right;
+                return Direction.Right;
             }
             else if (curWallPos.x - this.transform.position.x > 0.1f * wallWidth)
             {
                 //		Debug.Log("move Left");
-                TurnDirection(BM_Dir.Left);
+                TurnDirection(Direction.Left);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Left;
+                return Direction.Left;
             }
         }
         else
@@ -239,9 +239,9 @@ public class Player : Actor
                 if (IsAlllowToPass(downLeftValue))
                 {
                     //			Debug.Log("move left");
-                    TurnDirection(BM_Dir.Left);
+                    TurnDirection(Direction.Left);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Left;
+                    return Direction.Left;
                 }
             }
             //right
@@ -251,9 +251,9 @@ public class Player : Actor
                 if (IsAlllowToPass(downRightValue))
                 {
                     //				Debug.Log("move right");
-                    TurnDirection(BM_Dir.Right);
+                    TurnDirection(Direction.Right);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Right;
+                    return Direction.Right;
                 }
             }
             else
@@ -262,23 +262,23 @@ public class Player : Actor
                 // go back first  
                 if (this.transform.position.z < curWallPos.z)
                 {
-                    TurnDirection(BM_Dir.Down);
+                    TurnDirection(Direction.Down);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Down;
+                    return Direction.Down;
                 }
                 else if (this.transform.position.z > curWallPos.z)
                 {
                     Vector3 pos = this.transform.position;
                     pos.z = curWallPos.z;
                     this.transform.position = pos;
-                    return BM_Dir.Down;
+                    return Direction.Down;
                 }
             }
         }
-        return BM_Dir.None;
+        return Direction.None;
     }
 
-    BM_Dir WalkLeft()
+    Direction WalkLeft()
     {
         Vector3 curWallPos = level_.GetPositionAt(posX, posY);
 
@@ -288,23 +288,23 @@ public class Player : Actor
             if (Mathf.Abs(this.transform.position.z - curWallPos.z) < 0.1f * wallWidth)
             {
                 //			Debug.Log("move Left");
-                TurnDirection(BM_Dir.Left);
+                TurnDirection(Direction.Left);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Left;
+                return Direction.Left;
             }
             else if (this.transform.position.z - curWallPos.z > 0.1f * wallWidth)
             {
                 //			Debug.Log("move Up");
-                TurnDirection(BM_Dir.Up);
+                TurnDirection(Direction.Up);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Up;
+                return Direction.Up;
             }
             else if (curWallPos.z - this.transform.position.z > 0.1f * wallWidth)
             {
                 //			Debug.Log("move Down");
-                TurnDirection(BM_Dir.Down);
+                TurnDirection(Direction.Down);
                 this.transform.Translate(this.transform.forward * Time.deltaTime * speed);
-                return BM_Dir.Down;
+                return Direction.Down;
             }
         }
         else
@@ -316,9 +316,9 @@ public class Player : Actor
                 if (IsAlllowToPass(downLeftValue))
                 {
                     //				Debug.Log("move down");
-                    TurnDirection(BM_Dir.Down);
+                    TurnDirection(Direction.Down);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Down;
+                    return Direction.Down;
                 }
             }
             //up
@@ -328,9 +328,9 @@ public class Player : Actor
                 if (IsAlllowToPass(upLeftValue))
                 {
                     //			Debug.Log("move up");
-                    TurnDirection(BM_Dir.Up);
+                    TurnDirection(Direction.Up);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Up;
+                    return Direction.Up;
                 }
             }
             else
@@ -339,23 +339,23 @@ public class Player : Actor
                 // go back first  
                 if (this.transform.position.x < curWallPos.x)
                 {
-                    TurnDirection(BM_Dir.Left);
+                    TurnDirection(Direction.Left);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Left;
+                    return Direction.Left;
                 }
                 else if (this.transform.position.x > curWallPos.x)
                 {
                     Vector3 pos = this.transform.position;
                     pos.x = curWallPos.x;
                     this.transform.position = pos;
-                    return BM_Dir.Left;
+                    return Direction.Left;
                 }
             }
         }
-        return BM_Dir.None;
+        return Direction.None;
     }
 
-    BM_Dir WalkRight()
+    Direction WalkRight()
     {
         Vector3 curWallPos = level_.GetPositionAt(posX, posY);
 
@@ -365,23 +365,23 @@ public class Player : Actor
             if (Mathf.Abs(this.transform.position.z - curWallPos.z) < 0.1f * wallWidth)
             {
                 //			Debug.Log("move Right");
-                TurnDirection(BM_Dir.Right);
+                TurnDirection(Direction.Right);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Right;
+                return Direction.Right;
             }
             else if (this.transform.position.z - curWallPos.z > 0.1f * wallWidth)
             {
                 //			Debug.Log("move Up");
-                TurnDirection(BM_Dir.Up);
+                TurnDirection(Direction.Up);
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                return BM_Dir.Up;
+                return Direction.Up;
             }
             else if (curWallPos.z - this.transform.position.z > 0.1f * wallWidth)
             {
                 //			Debug.Log("move Down");
-                TurnDirection(BM_Dir.Down);
+                TurnDirection(Direction.Down);
                 this.transform.Translate(this.transform.forward * Time.deltaTime * speed);
-                return BM_Dir.Down;
+                return Direction.Down;
             }
         }
         else
@@ -393,9 +393,9 @@ public class Player : Actor
                 if (IsAlllowToPass(downRightValue))
                 {
                     //			Debug.Log("move down");
-                    TurnDirection(BM_Dir.Down);
+                    TurnDirection(Direction.Down);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Down;
+                    return Direction.Down;
                 }
             }
             //up
@@ -405,9 +405,9 @@ public class Player : Actor
                 if (IsAlllowToPass(upRightValue))
                 {
                     //			Debug.Log("move up");
-                    TurnDirection(BM_Dir.Up);
+                    TurnDirection(Direction.Up);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Up;
+                    return Direction.Up;
                 }
             }
             else
@@ -416,20 +416,20 @@ public class Player : Actor
                 // go back first  
                 if (this.transform.position.x > curWallPos.x)
                 {
-                    TurnDirection(BM_Dir.Right);
+                    TurnDirection(Direction.Right);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                    return BM_Dir.Right;
+                    return Direction.Right;
                 }
                 else if (this.transform.position.x < curWallPos.x)
                 {
                     Vector3 pos = this.transform.position;
                     pos.x = curWallPos.x;
                     this.transform.position = pos;
-                    return BM_Dir.Right;
+                    return Direction.Right;
                 }
             }
         }
-        return BM_Dir.None;
+        return Direction.None;
     }
 
     #endregion

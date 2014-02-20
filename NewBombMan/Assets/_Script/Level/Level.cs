@@ -60,11 +60,9 @@ public class Level : SingletonBehaviour<Level>
 		Camera.main.fieldOfView = 45;
         Camera.main.transform.position = center + new Vector3(0, 1.732f, 1.0f) * 1;
         Camera.main.transform.LookAt(center, Vector3.up);
+		
 
-        Block block = map_.GetBlockAt(1, 1, 0);
-        basePosition = block.transform.position;
-
-        allMap = new BlockState[w, h];
+		allMap = new BlockState[w, h];
 		
         for (int x = 1; x < w - 1; x++)
         {
@@ -74,7 +72,7 @@ public class Level : SingletonBehaviour<Level>
                 if (a != null)
                 {
                     allMap[x, y] = BlockState.DeadCube;
-                    //		Debug.Log("x="+x+"  y="+y+" is not null");
+                    //Debug.Log("x="+x+"  y="+y+" is not null");
                 }
                 else
                 {
@@ -84,6 +82,11 @@ public class Level : SingletonBehaviour<Level>
             }
         }
 
+    //    Block block = map_.GetBlockAt(1, 1, 0);
+     //   basePosition = block.transform.position;
+        basePosition.x = w * 0.2f - 0.6f;
+        basePosition.z = h * 0.2f - 0.6f;
+        basePosition.y = 0.0f;
         //to do init player position
     }
 
@@ -106,7 +109,6 @@ public class Level : SingletonBehaviour<Level>
     public GameObject SpawnPlayer(int x, int y, string name)
     {
         GameObject res = Resources.Load(name) as GameObject;
-
         GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
         players_.Add(obj);
 
@@ -120,7 +122,6 @@ public class Level : SingletonBehaviour<Level>
     public GameObject SpawnMonster(int x, int y, string name)
     {
         GameObject res = Resources.Load(name) as GameObject;
-
         GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
         monsters_.Add(obj);
         return obj;
@@ -129,7 +130,6 @@ public class Level : SingletonBehaviour<Level>
     public GameObject SpawnBomb(int x, int y, string name)
     {
         GameObject res = Resources.Load(name) as GameObject;
-
         GameObject obj = Instantiate(res, GetPositionAt(x, y), Quaternion.identity) as GameObject;
         obj.name = Bomb.MakeName(x, y);
         bombs_.Add(obj);
