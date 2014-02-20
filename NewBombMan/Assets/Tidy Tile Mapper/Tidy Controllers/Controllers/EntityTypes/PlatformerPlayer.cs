@@ -11,7 +11,7 @@ public class PlatformerPlayer : Entity {
 	//The speed at which the character falls
 	public float gravity;
 	//The CharacterController that the character will utilise for movement
-	CharacterController cc;
+	protected CharacterController cc;
 	
 	//Our input keys - you'll need to assure you set these up in your project input
 	
@@ -23,38 +23,46 @@ public class PlatformerPlayer : Entity {
 	public string input_Jump = "Jump";
 	
 	//Our input states
-	bool isJumping = false;
-	bool left = false;
-	bool right = false;
-	bool down = false;
-	bool up = false;
-	bool isFalling = false;
+	protected bool isJumping = false;
+	protected bool left = false;
+	protected bool right = false;
+	protected bool down = false;
+	protected bool up = false;
+	protected bool isFalling = false;
 	
 	//This helps us return jump intervals instead of absolute values
-	float lastRawJump = 0.0f;
+	protected float lastRawJump = 0.0f;
 	//The current time for which we're been jumping
-	float currentJumpTime = 0.0f;
+	protected float currentJumpTime = 0.0f;
 	
 	//We'll go ahead and memorise these direction vectors
 	//we can test against them later to check what direction we are facing
-	static Vector3 leftDirection = new Vector3(1.0f,0.0f,0.0f);
-	static Vector3 rightDirection = new Vector3(-1.0f,0.0f,0.0f);
-	static Vector3 frontDirection = new Vector3(0.0f,0.0f,1.0f);
-	static Vector3 backDirection = new Vector3(0.0f,0.0f,-1.0f);
+	protected static Vector3 leftDirection = new Vector3(1.0f,0.0f,0.0f);
+	protected static Vector3 rightDirection = new Vector3(-1.0f,0.0f,0.0f);
+	protected static Vector3 frontDirection = new Vector3(0.0f,0.0f,1.0f);
+	protected static Vector3 backDirection = new Vector3(0.0f,0.0f,-1.0f);
 	
 	#region Camera
 	
 	//See the InitializeCamera() function to discover the function of this
 	public bool bindCameraToPlayer = true;
-	Camera playerCamera;
-	GameObject cameraRoot;
+	protected Camera playerCamera;
+	protected GameObject cameraRoot;
 	public float cameraDistance = 5.0f;
 	public float cameraHeightOffset = 1.0f;
 	
 	#endregion
+	
+	protected bool initialized = false;
 		
 	public override void OnInitializeEntity ()
 	{	
+		if(initialized){
+			return;
+		}
+		
+		initialized = true;
+		
 		//Retrieve our character controller
 		this.cc = gameObject.GetComponent<CharacterController>();
 		
@@ -66,6 +74,7 @@ public class PlatformerPlayer : Entity {
 	}
 	
 	void InitializeCamera(){
+
 		
 		//What we're going to do with our camera is:
 		//Create a new gameobject that will follow the character
@@ -114,7 +123,7 @@ public class PlatformerPlayer : Entity {
 	{
 		UpdateGravity();
 		
-		UpdateInput(Time.deltaTime);
+		HandleInput(Time.deltaTime);
 		
 		UpdateMovement(Time.deltaTime);
 		
@@ -159,6 +168,8 @@ public class PlatformerPlayer : Entity {
 		
 	}
 	
+	public bool inbuiltInput = true;
+	
 	//We can use this if we are taking input from some other source (e.g mobile)
 	public void SetCharacterState(bool left, bool right, bool up, bool down){
 		this.left = left;
@@ -167,7 +178,7 @@ public class PlatformerPlayer : Entity {
 		this.down = down;
 	}
 	
-	void UpdateInput(float deltaTime){
+	public virtual void HandleInput(float deltaTime){
 		
 		//Everything is false, until we prove otherwise
 		//It's almost philosophical
@@ -175,26 +186,7 @@ public class PlatformerPlayer : Entity {
 		right = false;
 		down = false;
 		up = false;
-		
-		//Word on the street is that I should use GetAxis() for movement
-		//But I'll level with you: I'm a renegade
-		
-		/*if(Input.GetButton(input_Left)){
-			left = true;
-		}
-		
-		if(Input.GetButton(input_Right)){
-			right = true;
-		}
-		
-		if(Input.GetButton(input_Down)){
-			down = true;
-		}
-		
-		if(Input.GetButton(input_Up)){
-			up = true;
-		}*/
-		
+				
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis ("Vertical");
 		
@@ -220,7 +212,7 @@ public class PlatformerPlayer : Entity {
 			Jump();
 		}		
 	}
-	
+		
 	void UpdateMovement(float deltaTime){
 		
 		Vector3 movement = Vector3.zero;

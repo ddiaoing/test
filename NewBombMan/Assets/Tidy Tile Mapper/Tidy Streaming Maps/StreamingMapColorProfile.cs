@@ -182,7 +182,7 @@ public class StreamingMapColorProfile : MonoBehaviour {
 	}
 	
 	public void GenerateMapFromTexture(){
-		
+				
 		if(map == null){
 			Debug.LogWarning("Cannot generate a map without first... having a map! Be sure you've sampled a texture.");
 			return;
@@ -215,7 +215,7 @@ public class StreamingMapColorProfile : MonoBehaviour {
 		int start_interval = (int)(pixelScale * 0.5f);
 					
 		int xc = 0,yc = 0;
-				
+		
 		for(int x = start_interval; x < texture.width; x+=interval){
 			
 			yc = 0;
@@ -229,7 +229,7 @@ public class StreamingMapColorProfile : MonoBehaviour {
 				if(i == -1){
 					continue;
 				}
-				
+													
 				map.SetBlockPrefabAt(blocks[i],xc,map.height - yc,1);
 								
 				yc++;

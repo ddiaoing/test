@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using DopplerInteractive.TidyTileMapper.Editors;
 
-public class BlockEditorWindow : EditorWindow
+public partial class BlockEditorWindow : EditorWindow
 {
+	//Recompile please
+	
 	TidyBlockEditor blockEditor;
 	public static TidyBlockMapCreator blockMapCreator;
 	

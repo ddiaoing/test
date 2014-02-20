@@ -22,12 +22,12 @@ public class StreamingRunner : MonoBehaviour {
 	float lastUpdate = 0.0f;
 	
 	public bool bypassQueue = false;
-	
 	void Start(){
 		
 		this.width = streamingMap.width;
 		this.height = streamingMap.height;
 		this.depth = streamingMap.depth;
+		
 		
 	}
 	

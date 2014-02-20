@@ -14,6 +14,8 @@ public class MapCreatorWindow : EditorWindow
 	[MenuItem("Window/Tidy Tile Mapper")]
 	public static void Init () {
 		EditorWindow.GetWindow(typeof(MapCreatorWindow),false,"Tidy Tile Mapper",true); 
+		
+		UpdateWindow.Init();
 	}
 	
 	void OnGUI(){

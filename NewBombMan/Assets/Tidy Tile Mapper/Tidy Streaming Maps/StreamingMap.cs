@@ -7,15 +7,12 @@ public class StreamingMap : MonoBehaviour{
 	
 	//A 2D map (faux 2D) holding the prefabs of blocks in the map
 	//If we wish to change a block, we should change this
-	[HideInInspector]
-	public Block[] prefabMap;
+	public StreamingMapNode[] nodeMap;
 	
 	//The width/height/depth of the prefab map
 	//[HideInInspector]
 	public int width;
-//	[HideInInspector]
 	public int height;
-	//[HideInInspector]
 	public int depth;
 	
 	//The blockmap that is created at runtime
@@ -40,6 +37,9 @@ public class StreamingMap : MonoBehaviour{
 	HashSet<Vector3> toBeCreated = new HashSet<Vector3>();
 	HashSet<Vector3> toBeDestroyed = new HashSet<Vector3>();
 	
+	HashSet<Vector3> toBeCreated_Background = new HashSet<Vector3>();
+	HashSet<Vector3> toBeDestroyed_Background = new HashSet<Vector3>();
+	
 	//We spread our destroy/create functions over multiple frames
 	//in order to make it even more delicious and efficient
 	
@@ -54,7 +54,7 @@ public class StreamingMap : MonoBehaviour{
 	int actionsPerPass = 3;
 	
 	public bool generateMapOnAwake = false;
-		
+			
 	//We sort our lists according to proximity to the player
 	//In this manner we do all we can to avoid "Popping"
 	void SortAllCollections(){
@@ -71,18 +71,18 @@ public class StreamingMap : MonoBehaviour{
 	//Initialize the prefab map (create the array)
 	public void InitializePrefabMap(int width, int height, int depth){
 
-		if(prefabMap == null || prefabMap.Length == 0){
+		if(nodeMap == null || nodeMap.Length == 0){
 	
 			this.width = width;
 			this.height = height;
 			this.depth = depth;
 			
-			prefabMap = new Block[width * height * depth];
+			nodeMap = new StreamingMapNode[width * height * depth];
 		}
 	}
-	
+		
 	public void ClearPrefabMap(){
-		prefabMap = null;
+		nodeMap = null;
 	}
 	
 	//Initialize the streaming map (create the prefab map, enable pooling)
@@ -101,18 +101,75 @@ public class StreamingMap : MonoBehaviour{
 		return Vector3.zero;
 	}
 	
-	//Retrieve the prefab object at the given coordinates
-	//We need to generate our index as it is a 1D array
-	public Block GetBlockPrefabAt(int x, int y, int z){
+	public List<Vector3> ListFromSet(HashSet<Vector3> hashSet){
 		
-		int index =x+y*width+(z*width*depth);
+		List<Vector3> vs = new List<Vector3>();
 		
-		if(index < 0 || index >= prefabMap.Length){
+		foreach(Vector3 v in hashSet){
+			vs.Add(v);
+		}
+		
+		return vs;
+	}
+		
+	public int GetBlockVariantAt(int x, int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+		
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return 0;
+		}
+		
+		
+		if(nodeMap[index] == null){
+			return 0;
+		}
+		
+		return nodeMap[index].variantIndex;
+		
+	}
+	
+	public StreamingMapNode GetNodeAt(int x,int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+				
+		if(index < 0 || index >= nodeMap.Length){
+						
 			return null;
 		}
 		
-		return prefabMap[index];
 		
+		if(nodeMap[index] == null){
+			return null;
+		}
+		
+		return nodeMap[index];
+		
+	}
+	
+	//Retrieve the prefab object at the given coordinates
+	//We need to generate our index as it is a 1D array
+	public Block GetBlockPrefabAt(int x, int y, int z){
+			
+		int index = GetIndexFor(x,y,z);
+				
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return null;
+		}
+		
+		
+		if(nodeMap[index] == null){
+			return null;
+		}
+		
+		return nodeMap[index].blockPrefab;
+		
+	}
+	
+	int GetIndexFor(int x, int y, int z){
+		return 	x+y*width+(z*width*depth);
 	}
 	
 	//Is this coordinate within our radius?
@@ -130,18 +187,107 @@ public class StreamingMap : MonoBehaviour{
 		
 	}
 	
-	//Set the prefab at this coordinate to... the desired prefab
-	public void SetBlockPrefabAt(Block blockPrefab, int x, int y, int z){
-				
-		int index =x+y*width+(z*width*depth);
+	//Is this coordinate on the outer rim of the radius?
+	bool IsOnOuterRim(Vector3 focus, Vector3 target){
 		
-		if(index < 0 || index >= prefabMap.Length){
+		float dist = Mathf.Abs(Vector3.Distance(target,focus));
+							
+		float n = 1.0f - ((dist) / (float)(drawRadius+1.0f));
+		
+		if(n == 0.0f){
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+	public void SetBlockNodeAt(StreamingMapNode node, int x, int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+		
+		if(index < 0 || index >= nodeMap.Length){
 						
 			return;
 		}
 		
-		prefabMap[index] = blockPrefab;
+		nodeMap[index] = node;
 		
+	}
+	
+	public void SetVariantAt(int variant, int x, int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+		
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return;
+		}
+		
+		if(nodeMap[index] != null){
+			nodeMap[index].variantIndex = variant;
+		}
+		
+	}
+	
+	//Set the prefab at this coordinate to... the desired prefab
+	public void SetBlockPrefabAt(Block blockPrefab, int x, int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+				
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return;
+		}
+				
+		if(nodeMap[index] == null){
+						
+			nodeMap[index] = new StreamingMapNode(blockPrefab);
+		}
+		else{
+			
+			nodeMap[index].blockPrefab = blockPrefab;
+		}
+		
+	}
+	
+	//Set the prefab at this coordinate to... the desired prefab
+	public void SetBlockPrefabAt(Block blockPrefab, int variant, int x, int y, int z){
+		
+		int index = GetIndexFor(x,y,z);
+		
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return;
+		}
+		
+		if(nodeMap[index] == null){
+			nodeMap[index] = new StreamingMapNode(blockPrefab,variant);
+		}
+		else{
+			nodeMap[index].blockPrefab = blockPrefab;
+			nodeMap[index].variantIndex = variant;
+		}
+		
+	}
+	
+	public void SetBackgroundAt(Material m, int x, int y, int z){
+		
+		
+		int index = GetIndexFor(x,y,z);
+		
+		if(index < 0 || index >= nodeMap.Length){
+						
+			return;
+		}
+		
+		if(nodeMap[index] == null){
+			nodeMap[index] = new StreamingMapNode(m);
+		}
+		else{
+			nodeMap[index].backgroundEntry = m;
+		}		
+
 	}
 	
 	public void OutputPrefabMap(){
@@ -209,15 +355,18 @@ public class StreamingMap : MonoBehaviour{
 		
 		for(int x1 = focus_x - radius; x1 <= focus_x + radius; x1++){
 			
+			
 			if(x1 < 0 || x1 >= width){
 				continue;
 			}
+			
 			
 			for(int y1 = focus_y - radius; y1 <= focus_y + radius; y1++){
 				
 				if(y1 < 0 || y1 >= height){
 					continue;
 				}
+				
 				
 				for(int z1 = focus_z - radius; z1 <= focus_z + radius; z1++){
 					
@@ -241,9 +390,11 @@ public class StreamingMap : MonoBehaviour{
 				
 				if(bypassQueue){
 					DestroyBlock(v);
+					RemoveBackgroundCoord(v);
 				}
 				else{
 					DeleteBlock(v);
+					RemoveBackgroundCoord(v);
 				}
 			}
 		}
@@ -254,9 +405,11 @@ public class StreamingMap : MonoBehaviour{
 								
 				if(bypassQueue){
 					InstantiateBlock(v);
+					AddBackgroundCoord(v);
 				}
 				else{
 					AddBlock(v);
+					AddBackgroundCoord(v);
 				}
 				
 			}
@@ -272,6 +425,29 @@ public class StreamingMap : MonoBehaviour{
 	void Update(){
 		UpdateDeletion (Time.deltaTime);
 		UpdateCreation(Time.deltaTime);
+		UpdateBackgrounds();
+		
+		if(backgroundChanged){
+			
+			blockMap.RecalculateBackground();
+			
+			backgroundChanged = false;
+			
+		}
+	}
+	
+	void UpdateBackgrounds(){
+				
+		foreach(Vector3 v in toBeDestroyed_Background){
+			RemoveBackgroundFor(v);
+		}
+		
+		if(toBeCreated_Background.Count > 0){
+			AddBackgroundFor(ListFromSet(toBeCreated_Background));
+		}
+		
+		toBeDestroyed_Background.Clear();
+		toBeCreated_Background.Clear();
 	}
 	
 	//Update our delete queue, delete if our timer says to
@@ -311,6 +487,7 @@ public class StreamingMap : MonoBehaviour{
 					
 					InstantiateBlock(v);
 					toBeCreated.Remove(v);
+					
 				}
 			}
 		}
@@ -329,7 +506,12 @@ public class StreamingMap : MonoBehaviour{
 			toBeCreated.Remove(coords);
 		}
 		
+		if(toBeCreated_Background.Contains(coords)){
+			toBeCreated_Background.Remove(coords);
+		}
+		
 		toBeDestroyed.Add(coords);
+		toBeDestroyed_Background.Add(coords);
 	}
 	
 	//Add this block to the create queue
@@ -342,12 +524,74 @@ public class StreamingMap : MonoBehaviour{
 		if(toBeDestroyed.Contains(coords)){
 			toBeDestroyed.Remove(coords);
 		}
-		
+				
 		toBeCreated.Add(coords);
 	}
 	
+	void RemoveBackgroundCoord(Vector3 coords){
+		
+		if(toBeDestroyed_Background.Contains(coords)){
+			return;
+		}
+				
+		if(toBeCreated_Background.Contains(coords)){
+			toBeCreated_Background.Remove(coords);
+		}
+		
+		toBeDestroyed_Background.Add(coords);
+	}
+	
+	void AddBackgroundCoord(Vector3 coords){
+		
+		if(toBeCreated_Background.Contains(coords)){
+			return;
+		}
+		
+		if(toBeDestroyed_Background.Contains(coords)){
+			toBeDestroyed_Background.Remove(coords);
+		}
+		
+		toBeCreated_Background.Add(coords);
+	}
+	
 	void DestroyBlock(Vector3 coords){
-      		BlockUtilities.AddBlockToMap(blockMap,null,false,0,true,(int)coords.x,(int)coords.y,(int)coords.z,false,false);
+		
+			int x = (int)coords.x;
+			int y = (int) coords.y;
+			int z = (int) coords.z;
+				
+			Block b = BlockUtilities.GetBlockAt(blockMap,x,y,z);
+			OrientedBlock ob = null;
+				
+			if(b != null){
+				ob = b as OrientedBlock;
+			}
+		
+			if(ob != null){
+			
+				StreamingMapNode n = GetNodeAt (x,y,z);
+			
+				if(n != null && !n.HasVariant()){
+					n.variantIndex = ob.GetCurrentVariant();
+				}
+			
+				GameObject cio = ob.GetCurrentInstantiatedObject();
+			
+				if(cio != null){
+				
+					TidyMapBoundObject mbo = cio.GetComponentInChildren<TidyMapBoundObject>();
+				
+					if(mbo != null){
+						if(!mbo.DestroyWhenStreaming()){
+							return;
+						}
+					}
+					
+				}
+			}
+		
+      		BlockUtilities.AddBlockToMap(blockMap,null,false,0,true,x,y,z,false,false);
+		
 	}
 	
 	//Instantiate our block! Wrap the AssetPool functions nicely
@@ -356,8 +600,16 @@ public class StreamingMap : MonoBehaviour{
 		int x = (int)coords.x;
 		int y = (int)coords.y;
 		int z = (int)coords.z;
+				
+		StreamingMapNode n = GetNodeAt(x,y,z);
 		
-		Block b = GetBlockPrefabAt(x,y,z);
+		Block b = null;
+		int bv = 0;
+		
+		if(n != null){
+			b = n.blockPrefab;
+			bv = n.variantIndex;
+		}
 				
 		Block toAdd = null;
 		
@@ -365,13 +617,131 @@ public class StreamingMap : MonoBehaviour{
 			
 			GameObject o = AssetPool.Instantiate(b.gameObject) as GameObject;
 			
+#if UNITY_4_0
+			o.SetActive(true);
+#else
 			o.SetActiveRecursively (true);
+#endif
 			
 			toAdd = o.GetComponent<Block>();
 			
+			OrientedBlock ob = toAdd as OrientedBlock;
+			
+			if(ob != null){
+				ob.PreRandomiseBlockOrientations();
+			}
+			
 		}
 				
-		BlockUtilities.AddBlockToMap(blockMap,toAdd,false,0,true,x,y,z,false,false);
+		if(n != null && n.HasVariant()){
+			BlockUtilities.AddBlockToMap(blockMap,toAdd,false,bv,true,x,y,z,false,false);
+		}
+		else{
+			BlockUtilities.AddBlockToMap(blockMap,toAdd,true,bv,true,x,y,z,false,false);
+		}
+		
+		if(n != null){
+						
+			if(!n.HasVariant()){
+				
+				Vector3 focus = new Vector3(focus_x,focus_y,focus_z);
+				
+				if(!IsOnOuterRim(focus,coords)){
+					//Let's save the variant so that we always get a consistent map
+					//It saves the programmer having to randomise this themselves
+					OrientedBlock ob = BlockUtilities.GetBlockAt(blockMap,x,y,z) as OrientedBlock;
+					
+					if(ob != null){
+						
+						n.variantIndex = ob.GetCurrentVariant();
+						
+						
+					}
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	bool backgroundChanged = false;
+	
+	void RemoveBackgroundFor(Vector3 coords){
+		
+		if(nodeMap == null || nodeMap.Length == 0){
+			return;
+		}
+		
+		int x = (int)coords.x;
+		int y = (int)coords.y;
+		int z = (int)coords.z;
+				
+		blockMap.RemoveFromBackground(new Vector3(x,y,z),false);
+				
+		backgroundChanged = true;
+	}
+	
+	void AddBackgroundFor(List<Vector3> coords){
+		
+		if(nodeMap == null || nodeMap.Length == 0){
+			return;
+		}
+		
+		List<StreamingMapNode> nodes = new List<StreamingMapNode>();
+		
+		for(int i = 0; i < coords.Count; i++){
+					
+			int x = (int) coords[i].x;
+			int y = (int) coords[i].y;
+			int z = (int) coords[i].z;
+						
+			StreamingMapNode n = nodeMap[GetIndexFor(x,y,z)];
+			
+			if(n == null){
+				coords.RemoveAt(i);
+				i--;
+				continue;
+			}
+			
+			Material m = n.backgroundEntry;
+			
+			if(m == null){
+				coords.RemoveAt(i);
+				i--;
+				continue;
+			}
+			
+			nodes.Add(n);
+			
+		}
+		
+		while(nodes.Count > 0){
+			
+			StreamingMapNode n = nodes[0];
+			
+			List<Vector3> mNodes = new List<Vector3>();
+			
+			for(int j = 0; j < nodes.Count; j++){
+				
+				if(n.backgroundEntry == nodes[j].backgroundEntry){
+					mNodes.Add(coords[j]);
+					nodes.RemoveAt(j);
+					coords.RemoveAt(j);
+					j--;
+				}
+				
+			}
+			
+			if(!blockMap.HasBackgroundEntryFor(n.backgroundEntry.name)){
+				blockMap.AddBackground(n.backgroundEntry);
+			}
+			
+			blockMap.AddEntryToBackground(mNodes.ToArray(),n.backgroundEntry.name);
+			
+		}
+		
+		backgroundChanged = true;
 		
 	}
 	
@@ -428,6 +798,32 @@ public class StreamingMap : MonoBehaviour{
 			return (int)(b - a);
 		}
 		#endregion
+		
+	}
+	
+	//Vaguely singleton-esque behaviour
+	//For speed on map bound objects
+	static StreamingMap instance;
+	
+	public static StreamingMap GetInstance(){
+		
+		if(instance == null){
+			instance = GameObject.FindObjectOfType(typeof(StreamingMap)) as StreamingMap;
+		}
+		
+		return instance;
+		
+	}
+	
+	//This is used when we have a game of multiple streaming maps over a few different scenes
+	//Statics need to be cleared
+	public static StreamingMap GetInstance(bool fresh){
+		
+		if(instance == null || fresh){
+			instance = GameObject.FindObjectOfType(typeof(StreamingMap)) as StreamingMap;
+		}
+		
+		return instance;
 		
 	}
 }
