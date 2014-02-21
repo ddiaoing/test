@@ -18,7 +18,7 @@ public interface IState<T>
 
 }
 
-public interface IStateManager<T> : IState<T>
+public interface IStateManager<T>
 {
     T Holder { get; set; }
     IState<T> GetCurrentState();
@@ -132,13 +132,18 @@ public class ProxyState<T>: State<T>
 
 }
 
-public class StateMachine<T> : IStateManager<T>
+public class StateMachine<T> : State<T>, IStateManager<T>
 {
     T holder_;
     System.Collections.Generic.SortedDictionary<string, IState<T>> stateDict_;
     IState<T> currentState_;
     IState<T> nextState_;
     bool inited_ = false;
+
+    public StateMachine(string name) : base(name)
+    {
+        stateDict_ = new System.Collections.Generic.SortedDictionary<string, IState<T>>();
+    }
 
     public StateMachine(T holder)
     {
@@ -150,6 +155,16 @@ public class StateMachine<T> : IStateManager<T>
     {
         get
         {
+            if (holder_ != null)
+            {
+                return holder_;
+            }
+
+            if (Manager != null)
+            {
+                return Manager.Holder;
+            }
+
             return holder_;
         }
         set
@@ -236,21 +251,8 @@ public class StateMachine<T> : IStateManager<T>
 
     #region State interface
 
-    public string Name
-    {
-        get { return ""; }
-    }
 
-    public IStateManager<T> Manager
-    {
-        get
-        {
-            return this;
-        }
-        set { }
-    }
-
-    public void OnInit()
+    public override void OnInit()
     {
         foreach (IState<T> state in stateDict_.Values)
         {
@@ -260,7 +262,7 @@ public class StateMachine<T> : IStateManager<T>
         inited_ = true;
     }
 
-    public void OnEnter()
+    public override void OnEnter()
     {
         if (currentState_ != null)
         {
@@ -268,7 +270,7 @@ public class StateMachine<T> : IStateManager<T>
         }
     }
 
-    public void OnExit()
+    public override void OnExit()
     {
         if (currentState_ != null)
         {
@@ -276,7 +278,7 @@ public class StateMachine<T> : IStateManager<T>
         }
     }
 
-    public void OnUpdate(float deltaTime)
+    public override void OnUpdate(float deltaTime)
     {
         if (nextState_ != currentState_)
         {
@@ -301,7 +303,7 @@ public class StateMachine<T> : IStateManager<T>
         }
     }
 
-    public void OnEvent(EventArgs e)
+    public override void OnEvent(EventArgs e)
     {
         if (currentState_ != null)
         {

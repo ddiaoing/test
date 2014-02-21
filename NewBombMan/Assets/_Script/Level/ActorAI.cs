@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class ActorAI : State<Actor>
+public class ActorAI : StateMachine<Actor>
 {
     public ActorAI(string name) : base(name)
+    {
+    }
+}
+
+public class AIState : State<Actor>
+{
+    public AIState(string name)
+        : base(name)
     {
     }
 }
@@ -28,7 +36,6 @@ public class SimpleAI : ActorAI
             case ActorState.Idle:
                 if (Time.time - mIdelTempTime > mIdelTime)
                 {
-
                     actor.SendMessage("Stop");
                 }
                 break;

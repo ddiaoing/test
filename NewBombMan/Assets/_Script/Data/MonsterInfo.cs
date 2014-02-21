@@ -13,7 +13,10 @@ public class MonsterInfo
     public int attack;
     public string model_file;
 
-
+    public string anim_idle;
+    public string anim_walk;
+    public string anim_attack;
+    public string anim_die;
 }
 
 [System.Serializable]

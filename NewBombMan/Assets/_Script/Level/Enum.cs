@@ -54,3 +54,10 @@ public enum ActorState
     Die,
     DieOver,
 };
+/*
+public enum AIState
+{
+    Thinking,
+    Partol,
+    Revenge
+}*/

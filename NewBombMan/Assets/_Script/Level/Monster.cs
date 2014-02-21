@@ -13,17 +13,7 @@ public class Monster : Actor
     #endregion
 
 
-    public enum EnemyLogicState
-    {
-        Partol,
-        Revenge,
-    };
-
-
-    float mIdelTime = 0.5f;
-    float mIdelTempTime;
-
-    public Direction mNextDir = Direction.None;
+    MonsterInfo info;
 
     protected override void Awake()
     {
@@ -45,6 +35,19 @@ public class Monster : Actor
     {   
         base.Update();
     }
+
+
+
+
+    public enum EnemyLogicState
+    {
+        Partol,
+        Revenge,
+    };
+    float mIdelTime = 0.5f;
+    float mIdelTempTime;
+
+    public Direction mNextDir = Direction.None;
 
     void SimpleAI()
     {
