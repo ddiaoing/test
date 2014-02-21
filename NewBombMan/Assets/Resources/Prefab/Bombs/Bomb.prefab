@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posX: 0
   posY: 0
-  flameObj: {fileID: 100000, guid: 2f9e7030759a647e5b7ec0b46dd414f0, type: 2}
+  flameObj: {fileID: 100000, guid: d1029d83f984c874d9a10d8687aa6422, type: 2}
   length: 3
   isStrong: 0
   beHit: 0

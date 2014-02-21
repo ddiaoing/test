@@ -34,9 +34,18 @@ public class Player : Actor
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        PlayerControl();
+        if (control_ != Control.None)
+        {
+            PlayerControl();
+
+        }
+        else
+        {
+            base.Update();
+        }
+
     }
 
 
@@ -45,34 +54,34 @@ public class Player : Actor
         switch (control_)
         {
             case Control.Up:
-                dir_ = WalkUp();
+                dir = WalkUp();
                 UpdatePosition();
                 break;
 
             case Control.UpLeft:
-                dir_ = WalkUp();
-                if (dir_ == Direction.None)
+                dir = WalkUp();
+                if (dir == Direction.None)
                     WalkLeft();
                 UpdatePosition();
                 break;
 
             case Control.LeftUp:
-                dir_ = WalkLeft();
-                if (dir_ == Direction.None)
+                dir = WalkLeft();
+                if (dir == Direction.None)
                     WalkUp();
                 UpdatePosition();
                 break;
 
             case Control.UpRight:
                 WalkUp();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkRight();
                 UpdatePosition();
                 break;
 
             case Control.RightUp:
                 WalkRight();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkUp();
                 UpdatePosition();
                 break;
@@ -84,28 +93,28 @@ public class Player : Actor
 
             case Control.DownLeft:
                 WalkDown();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkLeft();
                 UpdatePosition();
                 break;
 
             case Control.LeftDown:
                 WalkLeft();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkDown();
                 UpdatePosition();
                 break;
 
             case Control.DownRight:
                 WalkDown();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkRight();
                 UpdatePosition();
                 break;
 
             case Control.RightDown:
                 WalkRight();
-                if (dir_ == Direction.None)
+                if (dir == Direction.None)
                     WalkDown();
                 UpdatePosition();
                 break;

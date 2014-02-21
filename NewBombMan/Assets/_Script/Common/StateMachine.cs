@@ -34,6 +34,11 @@ public class State<T> : IState<T>
     public State()
     {
     }
+    
+    public State(string name)
+    {
+        name_ = name;
+    }
 
     public string Name
     {
@@ -83,6 +88,49 @@ public class State<T> : IState<T>
 
 }
 
+public class ProxyState<T>: State<T> 
+{
+    public Action<float> Updating;
+    public Action Starting;
+    public Action Finishing;
+
+    public ProxyState(string name)
+        : base(name)
+    {
+    }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+
+        if (Starting != null)
+        {
+            Starting();
+        }
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+
+        if (Finishing != null)
+        {
+            Finishing();
+        }
+    }
+
+    public override void OnUpdate(float delta)
+    {
+        if (Updating != null)
+        {
+            Updating(delta);
+        }
+
+        base.OnUpdate(delta);
+    }
+
+
+}
 
 public class StateMachine<T> : IStateManager<T>
 {

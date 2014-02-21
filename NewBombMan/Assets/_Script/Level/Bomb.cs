@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Bomb : MonoBehaviour
 {
@@ -70,26 +71,34 @@ public class Bomb : MonoBehaviour
 
         // hide the bomb
         Hide();
-        FlameOn(posX, posY, 0);
+        
+        HashSet<GameObject> flamedObjects = new HashSet<GameObject>();
+        FlameOn(posX, posY, 0, flamedObjects);
+
 
         // create the flame 
         for (int i = 1; i <= length; i++)
         {
             //up
             if (frameStop[0] == false)
-                frameStop[0] = FlameOn(posX, posY + i, i);
+                frameStop[0] = FlameOn(posX, posY + i, i, flamedObjects);
 
             //down
             if (frameStop[1] == false)
-                frameStop[1] = FlameOn(posX, posY - i, i);
+                frameStop[1] = FlameOn(posX, posY - i, i, flamedObjects);
 
             //left
             if (frameStop[2] == false)
-                frameStop[2] = FlameOn(posX - i, posY, i);
+                frameStop[2] = FlameOn(posX - i, posY, i, flamedObjects);
 
             //right
             if (frameStop[3] == false)
-                frameStop[3] = FlameOn(posX + i, posY, i);
+                frameStop[3] = FlameOn(posX + i, posY, i, flamedObjects);
+        }
+
+        foreach (GameObject obj in flamedObjects)
+        {
+            obj.SendMessage("OnFlamed", this, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -98,11 +107,13 @@ public class Bomb : MonoBehaviour
     /// Flames on.
     /// if the flame stop, return true
     /// </summary>
-    bool FlameOn(int x, int y, int curLength)
+    bool FlameOn(int x, int y, int curLength, HashSet<GameObject> objects)
     {
         GameObject flame = null;
         FlameBase scp;
         Vector3 pos = level_.GetPositionAt(x, y);
+        List<GameObject> list;
+
         switch (level_[x, y])
         {
             case BlockState.Empty: // empty
@@ -110,6 +121,9 @@ public class Bomb : MonoBehaviour
                 scp = flame.GetComponent<FlameBase>();
                 scp.curLength = curLength;
                 flame.transform.parent = this.transform;
+
+                list = level_.GetOverlapObject(x, y);
+                objects.UnionWith(list);
                 return false;
 
             case BlockState.DeadCube: // dead cube
@@ -130,6 +144,9 @@ public class Bomb : MonoBehaviour
                 scp = flame.GetComponent<FlameBase>();
                 scp.curLength = curLength;
                 flame.transform.parent = this.transform;
+                  
+                list = level_.GetOverlapObject(x, y);
+                objects.UnionWith(list);
 
                 GameObject bomb = GameObject.Find(Bomb.MakeName(x, y));
                 if (bomb != null)

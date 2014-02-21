@@ -19,23 +19,6 @@ public class Monster : Actor
         Revenge,
     };
 
-    public enum EnemyState
-    {
-        Idle,
-        Stop,
-        StopOver,
-        Walk,
-        Attack,
-        AttackOver,
-        Hurt,
-        HurtOver,
-        Skill,
-        SkillOver,
-        Die,
-        DieOver,
-    };
-
-    public EnemyState mState = EnemyState.Idle;
 
     float mIdelTime = 0.5f;
     float mIdelTempTime;
@@ -46,6 +29,9 @@ public class Monster : Actor
     {
         base.Awake();
 
+        ActorAI aiState = new SimpleAI();
+        ai_.AddState(aiState);
+        ai_.ChangeState(aiState);
     }
 
     // Use this for initialization
@@ -55,58 +41,62 @@ public class Monster : Actor
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
+    {   
+        base.Update();
+    }
+
+    void SimpleAI()
     {
         switch (mState)
         {
-            case EnemyState.Idle:
+            case ActorState.Idle:
                 if (Time.time - mIdelTempTime > mIdelTime)
                 {
-                    mState = EnemyState.Stop;
+                    mState = ActorState.Stop;
                 }
                 break;
 
-            case EnemyState.Walk:
-                int i1 = Move(dir_);
+            case ActorState.Walk:
+                int i1 = Move(dir);
                 if (i1 <= 0)
                 {
                     Debug.Log("i= " + i1 + " x= " + posX + " y=" + posY); ;
-                    mState = EnemyState.Stop;
+                    mState = ActorState.Stop;
                 }
                 break;
 
-            case EnemyState.Stop:
+            case ActorState.Stop:
                 int i = Random.Range(1, 100) % 5;
                 if (i == 0)
                 {
                     TurnDirection(Direction.Up);
-                    mState = EnemyState.Walk;
+                    mState = ActorState.Walk;
                 }
                 else if (i == 1)
                 {
                     TurnDirection(Direction.Down);
-                    mState = EnemyState.Walk;
+                    mState = ActorState.Walk;
                 }
                 else if (i == 2)
                 {
                     TurnDirection(Direction.Left);
-                    mState = EnemyState.Walk;
+                    mState = ActorState.Walk;
                 }
                 else if (i == 3)
                 {
                     TurnDirection(Direction.Right);
-                    mState = EnemyState.Walk;
+                    mState = ActorState.Walk;
                 }
                 else
                 {
                     mIdelTempTime = Time.time;
-                    mState = EnemyState.Idle;
+                    mState = ActorState.Idle;
                 }
                 break;
 
         }
 
     }
-
 
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Actor : MonoBehaviour 
 {
-    protected StateMachine<Actor> stateManager_;
+    protected StateMachine<Actor> ai_;
     protected Level level_;
 
     public int posX, posY;
@@ -24,12 +24,21 @@ public class Actor : MonoBehaviour
     protected BlockState downRightValue;
 
 
-    public Direction dir_ = Direction.Down;
+    public Direction dir = Direction.Down;
 
+    protected ActorState mState = ActorState.Idle;
+    public ActorState state
+    {
+        get { return mState; }
+    }
+
+    Animator animator;
 
     protected virtual void Awake()
     {
         level_ = Level.Instance;
+        animator = GetComponent<Animator>();
+        ai_ = new StateMachine<Actor>(this);
     }
 	// Use this for initialization
     protected virtual void Start()
@@ -38,35 +47,49 @@ public class Actor : MonoBehaviour
         GetCurrentPositionInfo();
 	}
 
-    #region tool function
-
-    protected void TurnDirection(Direction dir)
+    protected virtual void Update()
     {
-        switch (dir)
-        {
-            case Direction.Up:
-                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 180, 0)))
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-                break;
-
-            case Direction.Down:
-                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 0, 0)))
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                break;
-
-            case Direction.Left:
-                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 90, 0)))
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                break;
-
-            case Direction.Right:
-                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 270, 0)))
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
-                break;
-        }
-
-		dir_ = dir;
+        ai_.OnUpdate(Time.deltaTime);
     }
+
+    // invoke by SendMessage
+#region EVENT_HANDLE
+
+    void Idle()
+    {
+        mState = ActorState.Idle;
+
+     //   animator.SetTrigger("Idle");
+    }
+
+    void Stop()
+    {
+        mState = ActorState.Stop;
+
+    }
+
+    void Walk(object param)
+    {
+        mState = ActorState.Walk;
+        TurnDirection((Direction)param);
+    }
+
+    void Attack()
+    {
+        mState = ActorState.Attack;
+    }
+
+    void Hurt()
+    {
+        mState = ActorState.Hurt;
+    }
+
+    void OnFlamed(object param)
+    {
+
+    }
+
+#endregion
 
     protected void GetCurrentPositionInfo()
     {
@@ -126,6 +149,34 @@ public class Actor : MonoBehaviour
                 return true;
             return false;
         }
+    }
+
+    public void TurnDirection(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.Up:
+                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 180, 0)))
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                break;
+
+            case Direction.Down:
+                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 0, 0)))
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                break;
+
+            case Direction.Left:
+                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 90, 0)))
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                break;
+
+            case Direction.Right:
+                if (this.transform.rotation != Quaternion.Euler(new Vector3(0, 270, 0)))
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
+                break;
+        }
+
+        this.dir = dir;
     }
 
     public int Move(Direction dir)
@@ -240,6 +291,5 @@ public class Actor : MonoBehaviour
         return -1;
     }
 
-    #endregion
 
 }

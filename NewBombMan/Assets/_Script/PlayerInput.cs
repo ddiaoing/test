@@ -16,7 +16,7 @@ public class PlayerInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (useKeyboard)
+        if (useKeyboard && !beginJoystick)
         {
             Player player = Level.Instance.localPlayer_;
             if (player == null)
@@ -108,7 +108,7 @@ public class PlayerInput : MonoBehaviour {
     }
  
     // Easy Touch Plugin Function
-
+    bool beginJoystick;
     void On_JoystickMove(MovingJoystick move)
     {
         Player player = Level.Instance.localPlayer_;
@@ -116,7 +116,7 @@ public class PlayerInput : MonoBehaviour {
         {
             return;
         }
-
+        beginJoystick = true;
         Control control;
         GetCmd(move, out control);
         player.SetControl(control);
@@ -213,7 +213,7 @@ public class PlayerInput : MonoBehaviour {
         {
             return;
         }
-
+        beginJoystick = false;
         player.SetControl(Control.None);
     }
     #endregion

@@ -38,3 +38,19 @@ public enum Direction
     None,
 }
 
+
+public enum ActorState
+{
+    Idle,
+    Stop,
+    StopOver,
+    Walk,
+    Attack,
+    AttackOver,
+    Hurt,
+    HurtOver,
+    Skill,
+    SkillOver,
+    Die,
+    DieOver,
+};
