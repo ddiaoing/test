@@ -32,7 +32,7 @@ public class Actor : MonoBehaviour
         get { return mState; }
     }
 
-    Animator animator;
+    protected Animator animator;
 
     protected virtual void Awake()
     {
@@ -49,6 +49,9 @@ public class Actor : MonoBehaviour
 
     protected virtual void Update()
     {
+
+
+
         ai_.OnUpdate(Time.deltaTime);
     }
 
@@ -58,19 +61,20 @@ public class Actor : MonoBehaviour
     void Idle()
     {
         mState = ActorState.Idle;
-
+        animator.SetFloat("Speed", 0.0f);
      //   animator.SetTrigger("Idle");
     }
 
     void Stop()
     {
         mState = ActorState.Stop;
-
+        animator.SetFloat("Speed", 0.0f);
     }
 
     void Walk(object param)
     {
         mState = ActorState.Walk;
+        animator.SetFloat("Speed", 0.5f);
         TurnDirection((Direction)param);
     }
 
@@ -86,7 +90,8 @@ public class Actor : MonoBehaviour
 
     void OnFlamed(object param)
     {
-
+        animator.SetTrigger("Die");
+   //     level_.DestroyObject(this.gameObject);
     }
 
 #endregion

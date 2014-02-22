@@ -131,6 +131,7 @@ public class Level : SingletonBehaviour<Level>
     public void DestroyObject(GameObject obj)
     {
         levelObjects_.Remove(obj);
+        Destroy(obj);
     }
 
     public void ClearBlock(int x, int y)

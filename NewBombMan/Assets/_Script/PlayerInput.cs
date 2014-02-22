@@ -85,11 +85,12 @@ public class PlayerInput : MonoBehaviour {
 
         if (useKeyboard)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space))
             {
                 player.SetBomb();
             }
-        
+
+            
         }
   
 		if (GUI.Button(new Rect(Screen.width * 0.7f, Screen.height * 0.7f, Screen.width * 0.1f, Screen.width * 0.1f), "Bomb"))

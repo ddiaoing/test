@@ -129,12 +129,25 @@ public class Player : Actor
                 UpdatePosition();
                 break;
         }
+
+        if (control_ == Control.None)
+        {
+            animator.SetFloat("Speed", 0.0f);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0.5f);
+        }
+
+
     }
 
 
     #region  Player Movement
     Direction WalkUp()
     {
+
+
         Vector3 curWallPos = level_.GetPositionAt(posX, posY);
 
         // allow to walk up
@@ -250,6 +263,7 @@ public class Player : Actor
                     //			Debug.Log("move left");
                     TurnDirection(Direction.Left);
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
+
                     return Direction.Left;
                 }
             }

@@ -16,8 +16,9 @@ public class GamePlay : GameScreen
 
         Level.Instance.Load("Prefab/Maps/Map1");
         Level.Instance.SpawnPlayer(2, 2, "Prefab/Players/Player1");
-        Level.Instance.SpawnMonster(4, 2, "Prefab/Monsters/Orc");
-        Level.Instance.SpawnMonster(2, 4, "Prefab/Monsters/Ghost");
+      
+  //      Level.Instance.SpawnMonster(4, 2, "Prefab/Monsters/Orc");
+  //      Level.Instance.SpawnMonster(2, 4, "Prefab/Monsters/Ghost");
     }
 
 
